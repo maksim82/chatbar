@@ -21,8 +21,23 @@
   "users": [
     {
       "id": 1,
-      "username": "admin",
+      "username": "dima",
       "password": "123"
+    },
+    {
+      "id": 2,
+      "username": "maks",
+      "password": "2806"
+    },
+    {
+      "id": 3,
+      "username": "admin",
+      "password": "12345"
+    },
+    {
+      "id": 4,
+      "username": "sasha",
+      "password": "1111"
     }
   ],
   "profile": { "name": "typicode" }

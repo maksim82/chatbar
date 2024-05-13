@@ -1,8 +1,10 @@
 const fs = require('fs');
 const jsonServer = require('json-server');
 const path = require('path');
+const ws = require('ws');
 
 const server = jsonServer.create();
+let rooms = [];
 
 const router = jsonServer.router(path.resolve(__dirname, 'db.json'));
 
@@ -48,6 +50,35 @@ server.use((req, res, next) => {
 
     next();
 });
+
+const wss = new ws.Server({
+    port: 5000,
+}, () => console.log(`Server started on 5000`))
+
+
+wss.on('connection', function connection(ws) {
+    ws.on('message', function (message) {
+        message = JSON.parse(message)
+        switch (message.event) {
+            case 'message':
+                broadcastMessage(message)
+                break;
+            // case 'connection':
+            //     broadcastMessage(message)
+            //     break;
+        }
+    })
+
+    ws.on('createRoom', function (message) {
+        console.log(message);
+    })
+})
+
+function broadcastMessage(message, id) {
+    wss.clients.forEach(client => {
+        client.send(JSON.stringify(message))
+    })
+}
 
 server.use(router);
 
